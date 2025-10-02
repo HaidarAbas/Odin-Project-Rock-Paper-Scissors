@@ -1,0 +1,6 @@
+1. Computer will randomly pick one: rock, paper or scissors
+2. Ask user to pick one: rock, paper or scissors
+3. Decide the winner based on the choices
+4. Display a message with the outcome
+5. Record the outcome and keep track of the score
+6. Play again (for a preset number of rounds)
