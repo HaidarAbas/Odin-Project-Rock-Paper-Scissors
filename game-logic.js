@@ -4,13 +4,17 @@ const scissors = "scissors";
 
 let roundCounter = 0;
 
-const btnRock = document.getElementById("rock");
-const btnPaper = document.getElementById("paper");
-const btnScissors = document.getElementById("scissors");
+let activeBtns = true;
+let btnElements = document.querySelectorAll("button");
+
+const imgHandLeft = document.getElementById("img-hand-left");
+const imgHandRight = document.getElementById("img-hand-right");
+
+//-----------------DOM method for results-----------------//
 
 const resultsTextArea = document.createElement("textarea");
 resultsTextArea.setAttribute("id", "results-text");
-resultsTextArea.setAttribute("style", "width: 650px; height: 300px; border: 2px dashed grey; border-radius: 5px; resize: none;");
+resultsTextArea.setAttribute("style", "width: 650px; height: 200px; border: 2px dashed grey; border-radius: 5px; resize: none;");
 resultsTextArea.readOnly = true;
 
 const resultsScoreHeader = document.createElement("h4");
@@ -20,6 +24,8 @@ resultsScoreHeader.textContent = "Human 0   /   Computer 0"
 const resultsDisplayDiv = document.getElementById("results-display");
 resultsDisplayDiv.appendChild(resultsTextArea);
 resultsDisplayDiv.appendChild(resultsScoreHeader);
+
+//-----------------game logic-----------------//
 
 let humanScore = 0;
 let computerScore = 0;
@@ -113,17 +119,74 @@ function playRound(humanChoice, computerChoice) {
 function checkScore(numOfRounds) {
     if (roundCounter === numOfRounds) {
         if (humanScore === computerScore) {
-            resultsScoreHeader.textContent += " Game Over! It's a tie!";
+            resultsScoreHeader.textContent += " | Game Over! It's a tie!";
         }
         else if (humanScore > computerScore) {
-            resultsScoreHeader.textContent += " Game Over! Human Victory!";
+            resultsScoreHeader.textContent += " | Game Over! Human Victory!";
         }
         else {
-            resultsScoreHeader.textContent += " Game Over! Computer Victory!";
+            resultsScoreHeader.textContent += " | Game Over! Computer Victory!";
         }
     }
 }
 
-btnRock.onclick = () => playRound(getHumanChoiceOnClick(btnRock), getComputerChoice());
-btnPaper.onclick = () => playRound(getHumanChoiceOnClick(btnPaper), getComputerChoice());
-btnScissors.onclick = () => playRound(getHumanChoiceOnClick(btnScissors), getComputerChoice());
+function toggleButtons() {
+    btnElements.forEach((btn) => {
+        if (activeBtns === true) {
+            btn.disabled = "true";
+        } else {
+            btn.removeAttribute("disabled");
+        }
+    });
+
+    if (activeBtns === true) {
+        activeBtns = false;
+    } else {
+        activeBtns = true;
+    }
+}
+
+//-----------------events-----------------//
+
+//animations
+const shakeLeftKeyFrames = [{transformOrigin: "left"}, {transformOrigin: "left", transform: "rotate(-45deg)"}, {transformOrigin: "left", transform: "rotate(0)"}];
+const shakeRightKeyFrames = [{transformOrigin: "right"}, {transformOrigin: "right", transform: "rotate(45deg)"}, {transformOrigin: "right", transform: "rotate(0)"}];
+const shakeOptions = {duration: 750, iterations: 3};
+
+btnElements.forEach((btn) => {
+    btn.onclick = () => {
+        let humanChoice = getHumanChoiceOnClick(btn);
+        let computerChoice = getComputerChoice();
+
+        playRound(humanChoice, computerChoice);
+
+        if (imgHandLeft.src !== "rps-images/rock-small.png" && imgHandRight.src !== "rps-images/rock-small-flip.png") {
+            imgHandLeft.src = "rps-images/rock-small.png";
+            imgHandRight.src = "rps-images/rock-small-flip.png";
+        }
+
+        toggleButtons();
+
+        imgHandLeft.animate(shakeLeftKeyFrames, shakeOptions);
+        imgHandRight.animate(shakeRightKeyFrames, shakeOptions);
+
+        setTimeout(() => {
+            if (computerChoice === paper) {
+                imgHandRight.src = "rps-images/paper-small-flip.png";
+            }
+            else if (computerChoice === scissors) {
+                imgHandRight.src = "rps-images/scissors-small-flip.png";
+            }
+
+            if (humanChoice === paper) {
+                imgHandLeft.src = "rps-images/paper-small.png";
+            }
+            else if (humanChoice === scissors) {
+                imgHandLeft.src = "rps-images/scissors-small.png";
+            }
+
+            toggleButtons();
+        }, 2500);
+    };
+    
+});

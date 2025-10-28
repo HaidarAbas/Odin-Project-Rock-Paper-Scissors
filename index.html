@@ -3,15 +3,22 @@
     <head>
         <meta charset="UTF-8">
         <title>Rock, Paper, Scissors</title>
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <div id="selection">
-            <button id="rock">rock</button>
-            <button id="paper">paper</button>
-            <button id="scissors">scissors</button>
-        </div>
-        <div id="results-display">
-            <h4 id="results-header">Results</h4>
+        <div id="content">
+            <div id="selection">
+                <button id="rock">rock</button>
+                <button id="paper">paper</button>
+                <button id="scissors">scissors</button>
+            </div>
+            <div id="animation-container">
+                <img id="img-hand-left" src="rps-images/rock-small.png" alt="default image of rock left">
+                <img id="img-hand-right" src="rps-images/rock-small-flip.png" alt="default image of rock right">
+            </div>
+            <div id="results-display">
+                <h4 id="results-header">Results</h4>
+            </div>
         </div>
         <script src="game-logic.js"></script>
     </body>

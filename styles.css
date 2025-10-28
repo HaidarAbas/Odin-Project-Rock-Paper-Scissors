@@ -1,0 +1,15 @@
+#content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#animation-container {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 150px;
+    margin-top: 150px;
+    margin-bottom: 80px;
+    align-items: center;
+}
